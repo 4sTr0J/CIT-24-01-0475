@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+
+  app:
+    build: .
+    container_name: banking_app
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - database
+
+    restart: always
+
+  database:
+
+    image: mysql:8
+
+    container_name: banking_db
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bank
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - bank_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  bank_data:

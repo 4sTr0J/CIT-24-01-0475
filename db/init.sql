@@ -1,0 +1,20 @@
+CREATE DATABASE IF NOT EXISTS bank;
+
+USE bank;
+
+CREATE TABLE IF NOT EXISTS account (
+
+    id INT PRIMARY KEY,
+
+    balance DOUBLE
+
+);
+
+INSERT INTO account(id,balance)
+SELECT 1,1000
+WHERE NOT EXISTS
+(
+SELECT *
+FROM account
+WHERE id=1
+);

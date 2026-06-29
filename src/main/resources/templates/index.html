@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Banking System</title>
+
+</head>
+
+<body>
+
+<h1>Simple Banking System</h1>
+
+<h2>Current Balance</h2>
+
+<h3 th:text="${balance}"></h3>
+
+<hr>
+
+<form action="/deposit" method="post">
+
+    <input type="number"
+           step="0.01"
+           name="amount"
+           placeholder="Deposit Amount">
+
+    <button type="submit">
+
+        Deposit
+
+    </button>
+
+</form>
+
+<br>
+
+<form action="/withdraw" method="post">
+
+    <input type="number"
+           step="0.01"
+           name="amount"
+           placeholder="Withdraw Amount">
+
+    <button type="submit">
+
+        Withdraw
+
+    </button>
+
+</form>
+
+</body>
+
+</html>
