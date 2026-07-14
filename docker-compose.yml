@@ -2,36 +2,54 @@ version: "3.8"
 
 services:
 
+  frontend:
+    build:
+      context: ./frontend
+    container_name: banking_frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - app
+    restart: always
+
   app:
     build: .
     container_name: banking_app
-
     ports:
       - "8080:8080"
-
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/bank
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
     depends_on:
       - database
-
+      - redis
     restart: always
 
   database:
-
     image: mysql:8
-
     container_name: banking_db
-
     restart: always
-
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: bank
-
     ports:
       - "3306:3306"
-
     volumes:
       - bank_data:/var/lib/mysql
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  redis:
+    image: redis:alpine
+    container_name: banking_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
 volumes:
   bank_data:
+  redis_data:

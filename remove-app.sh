@@ -4,7 +4,7 @@ echo "Removing Banking System..."
 
 docker compose down
 
-docker volume rm bank_data
+docker volume rm bank_data redis_data || true
 
 docker network rm banking_network
 
