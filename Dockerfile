@@ -1,11 +1,16 @@
-FROM maven:3.9.6-eclipse-temurin-17
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /workspace
 
-WORKDIR /app
-
-COPY . .
+COPY pom.xml ./
+COPY src ./src
 
 RUN mvn clean package -DskipTests
 
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+
+COPY --from=build /workspace/target/*.jar /app/app.jar
+
 EXPOSE 8080
 
-CMD ["java", "-jar", "target/banking-1.0.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
